@@ -57,8 +57,10 @@ public class MainActivity extends Activity implements OnClickListener {
 		case R.id.b2:
 			Toast.makeText(this, "b pushed ", Toast.LENGTH_SHORT).show();
 
-			//Intent i = new Intent(this, MainActivity.class);
-			Intent i = getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
+			// Intent i = new Intent(this, MainActivity.class);
+			Intent i = getBaseContext().getPackageManager()
+					.getLaunchIntentForPackage(
+							getBaseContext().getPackageName());
 			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(i);
 			break;
@@ -66,14 +68,14 @@ public class MainActivity extends Activity implements OnClickListener {
 
 			break;
 		}
-		showWether(tweather);
-	}
-
-	public void showWether(float tweather) {
 		int back;
+
 		Random randomGenerator = new Random();
+
 		float rand = randomGenerator.nextFloat();
+
 		float tom = rand * tweather;
+
 		String str = String.valueOf(rand);
 		str = str + "___" + String.valueOf(tweather) + "___"
 				+ String.valueOf(tom);
@@ -94,7 +96,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 
 		finalAnim(back);
-
 	}
 
 	public void finalAnim(int back) {
