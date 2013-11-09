@@ -3,7 +3,6 @@ package com.example.weatherforecast;
 import java.util.Random;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -13,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends Activity implements OnClickListener, WeatherChangeListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +29,14 @@ public class MainActivity extends Activity implements OnClickListener {
 		button2.setOnClickListener(this);
 		button3.setOnClickListener(this);
 		button4.setOnClickListener(this);
-
 	}
+	
+	 @Override
+	  protected void onResume() {
+	    WeatherView weather = (WeatherView) findViewById(R.id.weather_view);
+	    weather.requestWeather(this);
+	    super.onResume();
+	  }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -54,19 +59,20 @@ public class MainActivity extends Activity implements OnClickListener {
 		case R.id.button4:
 			tweather = (float) 0.7;
 			break;
-		case R.id.b2:
-			Toast.makeText(this, "b pushed ", Toast.LENGTH_SHORT).show();
-
-			// Intent i = new Intent(this, MainActivity.class);
-			Intent i = getBaseContext().getPackageManager()
-					.getLaunchIntentForPackage(
-							getBaseContext().getPackageName());
-			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(i);
-			break;
-		default:
-
-			break;
+// ???
+//		case R.id.b2:
+//			Toast.makeText(this, "b pushed ", Toast.LENGTH_SHORT).show();
+//
+//			// Intent i = new Intent(this, MainActivity.class);
+//			Intent i = getBaseContext().getPackageManager()
+//					.getLaunchIntentForPackage(
+//							getBaseContext().getPackageName());
+//			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//			startActivity(i);
+//			break;
+//		default:
+//
+//			break;
 		}
 		int back;
 
@@ -108,5 +114,10 @@ public class MainActivity extends Activity implements OnClickListener {
 		LinearLayout ll2 = (LinearLayout) findViewById(R.id.linearlayout2);
 		ll1.setVisibility(View.GONE);
 		ll2.setVisibility(View.GONE);
+	}
+
+	@Override
+	public void weatherChanged() {
+		findViewById(R.id.weather_progress).setVisibility(View.GONE);
 	}
 }
