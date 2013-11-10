@@ -68,11 +68,12 @@ public class WeatherView extends TextView {
 
     this.setBackgroundDrawable(new InsetDrawable(icon));
   }
-
+  
+  Location loc = null;
   private Location getCurrentLocation() {
     LocationManager lm = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
     Criteria crit = new Criteria();
-    Location loc = null;
+    
     crit.setAccuracy(Criteria.ACCURACY_FINE);
     String provider = lm.getBestProvider(crit, true);
     if(provider != null){
@@ -84,7 +85,9 @@ public class WeatherView extends TextView {
       @Override
       public void onProviderDisabled(String provider) {}
       @Override
-      public void onLocationChanged(Location location) {}
+      public void onLocationChanged(Location location) {
+    	  loc = location;
+      }
     });
     loc = lm.getLastKnownLocation(provider);
     }
