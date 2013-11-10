@@ -106,9 +106,7 @@ public class WeatherView extends TextView {
         + String.valueOf(location.getLongitude()) + ".json";
     }
     else {
-      String zip = sp.getString("zip_code", "10004");
-      url = "http://api.wunderground.com/api/f839a3245d4ab7fe/conditions/q/"
-          + zip +".json";
+      url = "http://api.wunderground.com/api/f839a3245d4ab7fe/conditions/q/autoip.json";
     }
       
     new GetWeather().execute(url);
