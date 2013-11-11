@@ -1,42 +1,122 @@
 package com.example.weatherforecast;
 
-import java.util.Random;
-
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewAnimator;
 
-public class MainActivity extends Activity implements OnClickListener, WeatherChangeListener {
+public class MainActivity extends Activity implements OnClickListener {
+	protected static final int DEFAULT_DEGREE = 50;
+	Button btnNext, btnPrevious;
+	ViewAnimator viewAnimator;
+	SeekBar sbar;
+	int curentWeater = 1;
+	Toast toast = null;
+	int degree;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		Button b = (Button) findViewById(R.id.b2);
-		b.setVisibility(View.GONE);
-		Button button1 = (Button) findViewById(R.id.button1);
-		Button button2 = (Button) findViewById(R.id.button2);
-		Button button3 = (Button) findViewById(R.id.button3);
-		Button button4 = (Button) findViewById(R.id.button4);
-		button1.setOnClickListener(this);
-		button2.setOnClickListener(this);
-		button3.setOnClickListener(this);
-		button4.setOnClickListener(this);
+		sbar = (SeekBar) findViewById(R.id.seekBar1);
+		sbar.setProgress(DEFAULT_DEGREE);
+		sbar.setOnSeekBarChangeListener(new ProgressHandler());
+		showDegree();
+
+		viewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator1);
+
+		((ImageButton) MainActivity.this.findViewById(R.id.imageButton1))
+				.setOnClickListener(this);
+		((ImageButton) MainActivity.this.findViewById(R.id.imageButton2))
+				.setOnClickListener(this);
+		((Button) MainActivity.this.findViewById(R.id.button1))
+				.setOnClickListener(this);
+
 	}
+
 	
-	 @Override
-	  protected void onResume() {
-	    WeatherView weather = (WeatherView) findViewById(R.id.weather_view);
-	    weather.requestWeather(this);
-	    super.onResume();
-	  }
+	
+	
+	private void showDegree() {
+		int progress = sbar.getProgress();
+
+		degree=progress - DEFAULT_DEGREE;
+		if (progress <= DEFAULT_DEGREE)
+			((TextView) MainActivity.this.findViewById(R.id.textView2))
+					.setText(String.valueOf(degree)
+							+ " \u00B0Ñ");
+		else
+			((TextView) MainActivity.this.findViewById(R.id.textView2))
+					.setText("+" + String.valueOf(degree)
+							+ " \u00B0Ñ");
+
+	}
+
+	private class ProgressHandler implements OnSeekBarChangeListener {
+		@Override
+		public void onStopTrackingTouch(SeekBar seekBar) {
+		}
+
+		@Override
+		public void onStartTrackingTouch(SeekBar seekBar) {
+		}
+
+		@Override
+		public void onProgressChanged(SeekBar seekBar, int progress,
+				boolean fromUser) {
+			if (fromUser) {
+				showDegree();
+
+			}
+		}
+	}
+
+	public void showToast(String text) {
+		try {toast.cancel();
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		toast = Toast
+				.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
+		toast.show();
+
+	}
+
+	private void setCurentWheather() {
+		switch (viewAnimator.getCurrentView().getId()) {
+		case R.id.imageView1:
+			curentWeater = 1;
+			break;
+		case R.id.imageView2:
+			curentWeater = 2;
+			break;
+
+		case R.id.imageView3:
+			curentWeater = 3;
+			break;
+
+		case R.id.imageView4:
+			curentWeater = 4;
+			break;
+
+		default:
+			break;
+		}
+		//showToast(String.valueOf(curentWeater));
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -47,77 +127,52 @@ public class MainActivity extends Activity implements OnClickListener, WeatherCh
 
 	@Override
 	public void onClick(View v) {
-		float tweather = 0;
+		final Animation inAnimLeft = AnimationUtils.loadAnimation(this,
+				R.anim.slide_in_left);
+		final Animation outAnimRight = AnimationUtils.loadAnimation(this,
+				R.anim.slide_out_right);
+		final Animation outAnimLeft = AnimationUtils.loadAnimation(this,
+				R.anim.slide_out_left);
+		final Animation inAnimRight = AnimationUtils.loadAnimation(this,
+				R.anim.slide_in_right);
 		switch (v.getId()) {
+		case R.id.imageButton1:
+
+			viewAnimator.setInAnimation(inAnimLeft);
+			viewAnimator.setOutAnimation(outAnimRight);
+			viewAnimator.showPrevious();
+			setCurentWheather();
+			break;
+		case R.id.imageButton2:
+
+			viewAnimator.setInAnimation(inAnimRight);
+			viewAnimator.setOutAnimation(outAnimLeft);
+			viewAnimator.showNext();
+			setCurentWheather();
+			break;
 		case R.id.button1:
-			tweather = (float) 0.9;
+			Intent i = new Intent(this, ResultActivity.class);
+			int [] data = {degree,curentWeater};
+			i.putExtra("data", data );
+			startActivity(i);
 			break;
-		case R.id.button2:
-			tweather = (float) 0.8;
+		default:
+
 			break;
-		case R.id.button3:
-		case R.id.button4:
-			tweather = (float) 0.7;
-			break;
-// ???
-//		case R.id.b2:
-//			Toast.makeText(this, "b pushed ", Toast.LENGTH_SHORT).show();
-//
-//			// Intent i = new Intent(this, MainActivity.class);
-//			Intent i = getBaseContext().getPackageManager()
-//					.getLaunchIntentForPackage(
-//							getBaseContext().getPackageName());
-//			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//			startActivity(i);
-//			break;
-//		default:
-//
-//			break;
 		}
-		int back;
-
-		Random randomGenerator = new Random();
-
-		float rand = randomGenerator.nextFloat();
-
-		float tom = rand * tweather;
-
-		String str = String.valueOf(rand);
-		str = str + "___" + String.valueOf(tweather) + "___"
-				+ String.valueOf(tom);
-		Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
-
-		if (tom > 0.5) {
-			back = R.drawable.sun;
-		} else {
-			if (0.35 < tom) {
-				back = R.drawable.cloud;
-			} else {
-				if (0.1 < tom) {
-					back = R.drawable.rain;
-				} else {
-					back = R.drawable.snow;
-				}
-			}
-		}
-
-		finalAnim(back);
-	}
-
-	public void finalAnim(int back) {
-		TextView text1 = (TextView) findViewById(R.id.textView1);
-		Button b = (Button) findViewById(R.id.b2);
-		text1.setText(R.string.tommorov_text);
-		b.setBackgroundResource(back);
-		b.setVisibility(View.VISIBLE);
-		LinearLayout ll1 = (LinearLayout) findViewById(R.id.linearlayout1);
-		LinearLayout ll2 = (LinearLayout) findViewById(R.id.linearlayout2);
-		ll1.setVisibility(View.GONE);
-		ll2.setVisibility(View.GONE);
+		
 	}
 
 	@Override
-	public void weatherChanged() {
-		findViewById(R.id.weather_progress).setVisibility(View.GONE);
-	}
+    protected void onStop () {
+        super.onStop();
+        try {
+        	toast.cancel();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+    }
+
+	
+
 }

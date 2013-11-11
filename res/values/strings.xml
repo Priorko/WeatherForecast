@@ -3,7 +3,13 @@
 
     <string name="app_name">Weather Forecast</string>
     <string name="action_settings">Settings</string>
-    <string name="prev_text">Select today\'s weather</string>
-    <string name="tommorov_text">Tomorrow weather will be</string>
+    <string name="prev_text">Guess the weather for tomorrow</string>
+    <string name="tommorov_text">Tomorrow will be</string>
+    <string name="degree">How many degrees</string>
+    <string name="weather">The general mood of weather</string>
+    <string name="btn">Forecast for tomorrow</string>
+    <string name="title_activity_result">The forecast for tomorrow</string>
+    <string name="result_text">Result</string>
+    <string name="button_back">Back</string>
 
 </resources>
