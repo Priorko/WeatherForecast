@@ -41,6 +41,7 @@ public class ResultActivity extends MainActivity {
 				if (savedInstanceState != null && savedInstanceState.containsKey(KEY_RANDOMIZED)) {
 					rand = savedInstanceState.getFloat(KEY_RANDOMIZED);
 				} else {
+					// Getting random number to predict weather
 					rand = new Random().nextFloat();
 					rand *= MULTIPLIER[i];
 				}
@@ -53,6 +54,10 @@ public class ResultActivity extends MainActivity {
 		}
 	}
 
+	/*
+	 * Saving state of generated random number
+	 * to prevent of losing it after orientation changed.
+	 */
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);

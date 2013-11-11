@@ -21,8 +21,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTitle"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:layout_centerInParent="true" >
         <ImageButton
             android:id="@+id/btnSun"
             android:layout_width="wrap_content"
