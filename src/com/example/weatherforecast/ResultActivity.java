@@ -3,82 +3,60 @@ package com.example.weatherforecast;
 import java.util.Random;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 public class ResultActivity extends MainActivity {
 
-	ImageButton rb1;
-	float tweather;
-	float rand = ((Random) new Random()).nextFloat();
-	double coef;
+	/**
+	 * array with integer ID of resources. 
+	 */
+	private static final int[] WEATHER_TYPE = {R.id.btnSun, R.id.btnCloud, 
+			R.id.btnRain, R.id.btnSnow};
+	
+	/**
+	 * Array of multipliers. Used for getting coefficient ({@link #MULTIPLIER}.id == {@link #WEATHER_TYPE}.id) 
+	 */
+	private static final float[] MULTIPLIER = {0.9f, 0.8f, 0.7f, 0.7f};
+
+	public static final String KEY_RANDOMIZED = "randomized";
+	float rand;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_result);
 
-		// showToast(locationStringFromLocation(getCurrentLocation()));//show
-		// coordinates of location
-		rb1 = (ImageButton) ResultActivity.this.findViewById(R.id.rb1);
-		rb1.setOnClickListener(this);
+		ImageView image = (ImageView) findViewById(R.id.ivResult);
+
+		// Getting the id of view for yesterdays weather
+		int yesterdaysWeather = 0;
 		Bundle extras = getIntent().getExtras();
-		int[] data = extras.getIntArray("data");
-		int degree = data[0];
-		String str = getResources().getString(R.string.tommorov_text) + " ";
-
-		if (degree > 0)
-			str += "+";
-
-		// Drawable newWeater=getResources().getDrawable(R.drawable.sun);
-		switch (data[1]) {
-		case 1:
-			coef = 0.9;
-			// newWeater = getResources().getDrawable(R.drawable.sun);
-			break;
-		case 2:
-			coef = 0.8;
-			// newWeater = getResources().getDrawable(R.drawable.cloud);
-			break;
-		case 3:
-		case 4:
-			coef = 0.7;
-			break;
-
-		default:
-
-			break;
+		if (extras != null && extras.containsKey(MainActivity.KEY_TODAYS_WEATHER)) {
+			yesterdaysWeather = extras.getInt(MainActivity.KEY_TODAYS_WEATHER);
 		}
-		degree = (int) (degree * coef);
-		tweather = (float) (rand * coef);
-		str += String.valueOf(degree);
-		str += "\u00B0Ñ";
 
-		if (tweather > 0.5) {
-			rb1.setImageResource(R.drawable.sun);
-		} else {
-			if (0.35 < tweather) {
-				rb1.setImageResource(R.drawable.cloud);
-			} else {
-				if (0.1 < tweather) {
-					rb1.setImageResource(R.drawable.rain);
+		for (int i = 0; i < WEATHER_TYPE.length; i++) {
+			if (WEATHER_TYPE[i] == yesterdaysWeather) {
+				if (savedInstanceState != null && savedInstanceState.containsKey(KEY_RANDOMIZED)) {
+					rand = savedInstanceState.getFloat(KEY_RANDOMIZED);
 				} else {
-					rb1.setImageResource(R.drawable.snow);
+					rand = new Random().nextFloat();
+					rand *= MULTIPLIER[i];
 				}
+				image.setImageResource(rand > 0.5 ? R.drawable.sun 
+						: rand > 0.35 ? R.drawable.cloud 
+						: rand > 0.1 ? R.drawable.rain : R.drawable.snow);
+				Toast.makeText(this, "random*weater - " + rand, Toast.LENGTH_SHORT).show();
+				break;
 			}
 		}
-		showToast("random*weater - " + String.valueOf(tweather));
-		degree = (int) (degree * rand);
-		((TextView) ResultActivity.this.findViewById(R.id.rText1)).setText(str);
-
 	}
 
 	@Override
-	public void onClick(View v) {
-		if(v.getId() == R.id.rb1)
-			finish();
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putFloat(KEY_RANDOMIZED, rand);
 	}
 
 }

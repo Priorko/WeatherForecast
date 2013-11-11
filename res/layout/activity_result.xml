@@ -17,14 +17,14 @@
         android:text="@string/result_text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <ImageButton
-        android:id="@+id/rb1"
+    <ImageView
+        android:id="@+id/ivResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/rText1"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:background="@drawable/btn_bg"
-        android:contentDescription="@string/button_back"
+        android:background="@color/transparent"
+        android:contentDescription="@string/debug_text"
         android:src="@drawable/sun" />
 
 </RelativeLayout>

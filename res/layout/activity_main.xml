@@ -1,130 +1,79 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity" >
+    android:paddingTop="@dimen/activity_vertical_margin" >
 
+    
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="30dp"
         android:layout_marginTop="10dp"
-        android:text="@string/prev_text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:text="@string/prev_text" />
 
-    <TextView
-        android:id="@+id/textView3"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:text="@string/degree"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:layout_below="@+id/tvTitle"
+        android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textView3"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:text="0"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <SeekBar
-        android:id="@+id/seekBar1"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textView2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:max="100" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/seekBar1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="@string/weather"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <ViewAnimator
-        android:id="@+id/viewAnimator1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textView4"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:fadeScrollbars="true" >
-
-        <ImageView
-            android:id="@+id/imageView1"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="70dp"
-            android:layout_marginRight="70dp"
-            android:src="@drawable/sun" />
+            android:orientation="horizontal" >
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
+            <ImageButton
+                android:id="@+id/btnSun"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:src="@drawable/sun"
+                android:contentDescription="@string/debug_text"
+                android:background="@color/transparent"
+                android:onClick="onWeatherSet" />
+
+            <ImageButton
+                android:id="@+id/btnCloud"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:src="@drawable/cloud"
+                android:contentDescription="@string/debug_text"
+                android:background="@color/transparent"
+                android:onClick="onWeatherSet" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="70dp"
-            android:layout_marginRight="70dp"
-            android:src="@drawable/cloud" />
+            android:orientation="horizontal" >
 
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="70dp"
-            android:layout_marginRight="70dp"
-            android:src="@drawable/rain" />
+            <ImageButton
+                android:id="@+id/btnRain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:src="@drawable/rain"
+                android:contentDescription="@string/debug_text"
+                android:background="@color/transparent"
+                android:onClick="onWeatherSet" />
 
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="70dp"
-            android:layout_marginRight="70dp"
-            android:src="@drawable/snow" />
-    </ViewAnimator>
-
-    <ImageButton
-        android:id="@+id/imageButton1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignTop="@id/viewAnimator1"
-        android:background="@drawable/btn_bg"
-        android:src="@drawable/arr_left" />
-
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/viewAnimator1"
-        android:background="@drawable/btn_bg"
-        android:src="@drawable/arr_right" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/viewAnimator1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:text="@string/btn" />
-
+            <ImageButton
+                android:id="@+id/btnSnow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:src="@drawable/snow"
+                android:contentDescription="@string/debug_text"
+                android:background="@color/transparent"
+                android:onClick="onWeatherSet" />
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>
