@@ -3,13 +3,10 @@
 
     <string name="app_name">Погодний шаман</string>
     <string name="action_settings">Настройки</string>
-    <string name="prev_text">Угадай погоду на завтра</string>
+    <string name="prev_text">Какая погода сегодня?</string>
     <string name="tommorov_text">Завтра будет</string>
-    <string name="degree">Сколько градусов</string>
-    <string name="weather">Общее настроение погоды</string>
-    <string name="btn">Узнать прогноз на завтра</string>
     <string name="title_activity_result">Прогноз на завтра</string>
-    <string name="result_text">Итог</string>
+    <string name="result_text">Прогноз на завтра</string>
     <string name="button_back">Назад</string>
 
 </resources>

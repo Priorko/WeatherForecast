@@ -48,7 +48,7 @@ public class ResultActivity extends MainActivity {
 				image.setImageResource(rand > 0.5 ? R.drawable.sun 
 						: rand > 0.35 ? R.drawable.cloud 
 						: rand > 0.1 ? R.drawable.rain : R.drawable.snow);
-				Toast.makeText(this, "random*weater - " + rand, Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "random*curWeather - " + rand, Toast.LENGTH_SHORT).show();
 				break;
 			}
 		}
