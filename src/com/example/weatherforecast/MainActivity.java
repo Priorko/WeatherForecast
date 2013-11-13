@@ -30,13 +30,10 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
 		sbar = (SeekBar) findViewById(R.id.seekBar1);
-		sbar.setProgress(DEFAULT_DEGREE);
 		sbar.setOnSeekBarChangeListener(new ProgressHandler());
-		showDegree();
-
 		viewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator1);
-
 		((ImageButton) MainActivity.this.findViewById(R.id.imageButton1))
 				.setOnClickListener(this);
 		((ImageButton) MainActivity.this.findViewById(R.id.imageButton2))
@@ -44,23 +41,59 @@ public class MainActivity extends Activity implements OnClickListener {
 		((Button) MainActivity.this.findViewById(R.id.button1))
 				.setOnClickListener(this);
 
+		Bundle extras = getIntent().getExtras();
+		if (extras != null && extras.containsKey("curentWeater")
+				&& extras.containsKey("degree")) {
+			showToast("Start");
+			curentWeater = savedInstanceState.getInt("curentWeater");
+			degree = savedInstanceState.getInt("degreeVal");
+
+		} else {
+			sbar.setProgress(DEFAULT_DEGREE);
+
+		}
+		showDegree();
+		viewAnimator.setDisplayedChild(curentWeater - 1);
+
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		// TODO Auto-generated method stub
+		
+		outState.putInt("curentWeater", curentWeater);
+		//outState.putInt("curentPicId", viewAnimator.getCurrentView().getId());
+		outState.putInt("degreeVal", degree);
+		 showToast(String.valueOf(curentWeater)+"____"+String.valueOf(degree));
+		
+		super.onSaveInstanceState(outState);
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+showToast("Restore");
+curentWeater = savedInstanceState.getInt("curentWeater");
+degree = savedInstanceState.getInt("degreeVal");
+
+showToast(String.valueOf(degree));
+viewAnimator.setDisplayedChild(curentWeater - 1);
+		super.onRestoreInstanceState(savedInstanceState);
 	}
 
 	
-	
-	
-	private void showDegree() {
+
+	public void showDegree() {
 		int progress = sbar.getProgress();
 
-		degree=progress - DEFAULT_DEGREE;
+		degree = progress - DEFAULT_DEGREE;
+		
 		if (progress <= DEFAULT_DEGREE)
 			((TextView) MainActivity.this.findViewById(R.id.textView2))
-					.setText(String.valueOf(degree)
-							+ " \u00B0Ñ");
+					.setText(String.valueOf(degree) + " \u00B0Ñ");
 		else
 			((TextView) MainActivity.this.findViewById(R.id.textView2))
-					.setText("+" + String.valueOf(degree)
-							+ " \u00B0Ñ");
+					.setText("+" + String.valueOf(degree) + " \u00B0Ñ");
 
 	}
 
@@ -84,13 +117,14 @@ public class MainActivity extends Activity implements OnClickListener {
 	}
 
 	public void showToast(String text) {
-		try {toast.cancel();
-			
+		try {
+			toast.cancel();
+
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		toast = Toast
-				.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
+		toast = Toast.makeText(getApplicationContext(), text,
+				Toast.LENGTH_SHORT);
 		toast.show();
 
 	}
@@ -115,7 +149,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		default:
 			break;
 		}
-		//showToast(String.valueOf(curentWeater));
+		// showToast(String.valueOf(curentWeater));
 	}
 
 	@Override
@@ -152,27 +186,25 @@ public class MainActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.button1:
 			Intent i = new Intent(this, ResultActivity.class);
-			int [] data = {degree,curentWeater};
-			i.putExtra("data", data );
+			int[] data = { degree, curentWeater };
+			i.putExtra("data", data);
 			startActivity(i);
 			break;
 		default:
 
 			break;
 		}
-		
+
 	}
 
 	@Override
-    protected void onStop () {
-        super.onStop();
-        try {
-        	toast.cancel();
+	protected void onStop() {
+		super.onStop();
+		try {
+			toast.cancel();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-    }
-
-	
+	}
 
 }
