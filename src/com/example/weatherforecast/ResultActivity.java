@@ -11,7 +11,7 @@ public class ResultActivity extends MainActivity {
 
 	ImageButton rb1;
 	float tweather;
-	float rand = ((Random) new Random()).nextFloat();
+	float rand;
 	double coef;
 	String str;
 	int degree;
@@ -21,6 +21,14 @@ public class ResultActivity extends MainActivity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_result);
+
+		if (savedInstanceState != null) {
+			if (savedInstanceState.containsKey("rand"))
+				rand = savedInstanceState.getFloat("rand");
+
+		} else {
+			rand = (new Random()).nextFloat();
+		}
 
 		rb1 = (ImageButton) ResultActivity.this.findViewById(R.id.rb1);
 		rb1.setOnClickListener(this);
@@ -44,12 +52,18 @@ public class ResultActivity extends MainActivity {
 
 	}
 
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putFloat("rand", rand);
+		super.onSaveInstanceState(outState);
+	}
+
 	void generateWeater() {
 		str = getResources().getString(R.string.tommorov_text) + " ";
-		
+
 		if (degree > 0)
 			str += "+";
-		
+
 		degree = (int) (degree * coef);
 		tweather = (float) (rand * coef);
 		str += String.valueOf(degree);
